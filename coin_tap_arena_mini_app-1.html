@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0a1024">
+<title>Coin Tap Arena</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#080d1d;--panel:#111a31;--panel2:#182442;--gold:#ffc94a;--gold2:#ff9e2c;--text:#f7f8ff;--muted:#9aa8c7;--green:#55e6a5}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#1b2a51 0%,var(--bg) 55%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;min-height:100vh}
+.app{max-width:480px;margin:auto;padding:18px 16px 24px}.top{display:flex;align-items:center;justify-content:space-between}.brand{display:flex;gap:10px;align-items:center}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#ffe38a,#ff9f24);display:grid;place-items:center;font-size:23px;box-shadow:0 5px 22px #ffb52b40}.brand h1{font-size:17px;margin:0;font-weight:900;letter-spacing:.5px}.brand p{margin:3px 0 0;color:var(--muted);font-size:11px}.pill{border:1px solid #344366;background:#141f39;border-radius:99px;padding:8px 11px;color:#dce5ff;font-size:11px}
+.balance{margin-top:23px;padding:18px;border:1px solid #35405d;border-radius:22px;background:linear-gradient(140deg,#1a2949,#10182e);box-shadow:0 14px 36px #0003;position:relative;overflow:hidden}.balance:after{content:"";position:absolute;width:150px;height:150px;right:-45px;top:-65px;border-radius:50%;background:#ffc94a12}.small{font-size:12px;color:var(--muted)}.total{display:flex;align-items:center;gap:9px;margin:8px 0 3px}.total strong{font-size:35px;letter-spacing:-1px}.coin{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,#fff1a5,#ffc02e 50%,#b86a08);border:2px solid #ffe18b;color:#7b4300;font-weight:1000;box-shadow:0 0 20px #ffbe3340}.trend{color:var(--green);font-size:11px}.game-title{margin:24px 2px 5px;font-size:16px;font-weight:800}.sub{color:var(--muted);font-size:12px;margin:0 2px}
+.tap-area{margin-top:15px;border:1px solid #293959;border-radius:24px;background:linear-gradient(180deg,#131f3a,#0d1529);padding:22px 16px 19px;text-align:center;overflow:hidden}.orbit{width:206px;height:206px;margin:2px auto 14px;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle,#263b65 0%,#172849 53%,#111a31 70%);border:1px dashed #52658b;box-shadow:0 0 0 12px #ffffff03,0 0 40px #ffbd2b14}.orbit:before,.orbit:after{content:"";position:absolute;border-radius:50%;border:1px solid #f9c44a28;inset:13px}.orbit:after{inset:27px;border-style:dotted}.tapcoin{z-index:1;width:143px;height:143px;border-radius:50%;border:5px solid #ffe18b;background:radial-gradient(circle at 32% 23%,#fff7ba 0%,#ffd34c 26%,#f4a51e 66%,#b96a08 100%);box-shadow:inset 0 0 0 4px #dc8c0a,0 12px 30px #ffb52c38;display:grid;place-items:center;color:#854700;font-size:65px;font-weight:1000;cursor:pointer;user-select:none;transition:transform .08s}.tapcoin:active{transform:scale(.94)}.tap-hint{font-size:12px;color:#dce4fa}.progress{height:7px;background:#293653;border-radius:99px;margin:13px 2px 0;overflow:hidden}.progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--gold2),#ffe78b);border-radius:99px;transition:width .2s}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}.stat{padding:12px 8px;background:#121d35;border:1px solid #263655;border-radius:15px;text-align:center}.stat strong{display:block;font-size:17px}.stat span{display:block;color:var(--muted);font-size:10px;margin-top:4px}.section{margin-top:22px}.section-head{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:800}.section-head small{color:var(--muted);font-weight:500;font-size:11px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.card{background:linear-gradient(145deg,#172442,#10182c);border:1px solid #2c3b5c;border-radius:17px;padding:14px}.card .emoji{font-size:24px}.card strong{display:block;font-size:13px;margin-top:8px}.card p{font-size:11px;color:var(--muted);line-height:1.4;margin:5px 0 12px}.btn{width:100%;border:0;border-radius:11px;padding:11px 10px;font-weight:800;font-size:12px;background:linear-gradient(90deg,#ffbd38,#ffe27c);color:#362000;cursor:pointer}.btn.secondary{background:#263654;color:#eef3ff;border:1px solid #3a4d70}.nav{position:sticky;bottom:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:22px;padding:8px;background:#0d1528eF;backdrop-filter:blur(14px);border:1px solid #283858;border-radius:17px}.nav button{background:transparent;border:0;color:var(--muted);padding:9px 3px;border-radius:11px;font-size:11px;font-weight:700}.nav button.active{background:#273654;color:#ffda75}.page{display:none}.page.active{display:block}.notice{margin-top:13px;color:#8797b8;font-size:10px;line-height:1.5;text-align:center}.refbox{word-break:break-all;background:#0b1326;border:1px dashed #425477;border-radius:12px;padding:12px;color:#dce6ff;font-size:11px;line-height:1.5;margin:12px 0}.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#f9d46b;color:#312000;font-weight:800;font-size:12px;padding:11px 15px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s;white-space:nowrap}.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+ <header class="top">
+  <div class="brand"><div class="logo">🪙</div><div><h1>COIN TAP ARENA</h1><p>PLAY • TAP • COLLECT</p></div></div>
+  <div class="pill">⚡ <span id="energy">100</span>/100</div>
+ </header>
+ <div class="balance"><div class="small">YOUR COIN BALANCE</div><div class="total"><div class="coin">C</div><strong id="coins">0</strong></div><div class="trend">↗ खेलो और अपना स्कोर बढ़ाओ</div></div>
+
+ <main id="gamePage" class="page active">
+  <div class="game-title">टैप करके कॉइन कमाओ</div><p class="sub">हर टैप पर +1 गेम कॉइन • डेमो गेम</p>
+  <div class="tap-area">
+   <div class="orbit"><button class="tapcoin" id="tapBtn" aria-label="Tap coin">C</button></div>
+   <div class="tap-hint">कॉइन पर टैप करें! ✨</div>
+   <div class="progress"><span id="progress"></span></div>
+   <div class="stats"><div class="stat"><strong id="today">0/100</strong><span>आज के टैप</span></div><div class="stat"><strong id="energyStat">100</strong><span>एनर्जी</span></div><div class="stat"><strong>+1</strong><span>प्रति टैप</span></div></div>
+  </div>
+  <div class="section"><div class="section-head">🚀 रोज़ के मिशन <small>कमाओ और आगे बढ़ो</small></div>
+   <div class="cards">
+    <div class="card"><div class="emoji">🎁</div><strong>Daily Reward</strong><p>हर दिन एक बार बोनस लो।</p><button class="btn" id="dailyBtn">+50 कॉइन</button></div>
+    <div class="card"><div class="emoji">👥</div><strong>Invite Friends</strong><p>दोस्तों को बुलाओ और गेम शेयर करो।</p><button class="btn secondary" id="inviteBtn">दोस्त बुलाएँ</button></div>
+   </div>
+  </div>
+ </main>
+
+ <main id="dailyPage" class="page">
+  <div class="section"><div class="section-head">🎁 दैनिक बोनस</div><p class="sub">हर दिन लॉगिन करके अपना बोनस लें।</p>
+   <div class="card" style="margin-top:14px;text-align:center;padding:24px"><div style="font-size:48px">🎁</div><strong style="font-size:19px">Daily Check-in</strong><p>आज का रिवॉर्ड</p><div style="font-size:28px;color:var(--gold);font-weight:900;margin:12px">+50 🪙</div><button class="btn" id="dailyBtn2">बोनस क्लेम करें</button></div>
+  </div>
+ </main>
+
+ <main id="invitePage" class="page">
+  <div class="section"><div class="section-head">👥 दोस्तों को आमंत्रित करें</div><p class="sub">अपना गेम लिंक शेयर करें। रेफ़रल काउंट इस डेमो में वास्तविक सर्वर से सत्यापित नहीं होता।</p>
+   <div class="card" style="margin-top:14px"><div class="emoji">🔗</div><strong>आपका इनवाइट लिंक</strong><div id="refLink" class="refbox">Telegram में खोलने पर आपका लिंक यहाँ दिखेगा।</div><button class="btn" id="shareBtn">लिंक शेयर करें</button></div>
+  </div>
+ </main>
+
+ <nav class="nav"><button class="active" data-page="gamePage">🪙 गेम</button><button data-page="dailyPage">🎁 बोनस</button><button data-page="invitePage">👥 आमंत्रित</button></nav>
+ <p class="notice">यह UI डेमो है। कॉइन्स केवल गेम पॉइंट्स हैं, नकद मूल्य नहीं। प्रोडक्शन में सर्वर-साइड सत्यापन और सुरक्षित डेटाबेस जोड़ें।</p>
+</div>
+<div class="toast" id="toast">+1 कॉइन!</div>
+<script>
+(function(){
+ const tg=window.Telegram&&window.Telegram.WebApp;
+ if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#0a1024');tg.setBackgroundColor('#080d1d')}catch(e){}}
+ const KEY='coinTapArenaDemo_v1';
+ const todayKey=()=>new Date().toISOString().slice(0,10);
+ let state;
+ try{state=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){state={}}
+ state.coins=Number(state.coins)||0;state.taps=Number(state.taps)||0;state.tapDay=state.tapDay||todayKey();state.daily=state.daily||'';state.energy=Number.isFinite(Number(state.energy))?Number(state.energy):100;
+ if(state.tapDay!==todayKey()){state.tapDay=todayKey();state.taps=0;state.energy=100}
+ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){};render()};
+ const $=id=>document.getElementById(id);
+ function render(){
+  $('coins').textContent=state.coins.toLocaleString('en-US');$('today').textContent=state.taps+'/100';$('energy').textContent=state.energy;$('energyStat').textContent=state.energy;$('progress').style.width=Math.min(100,state.taps)+'%';
+  $('dailyBtn').textContent=state.daily===todayKey()?'कल फिर आएँ':' +50 कॉइन';$('dailyBtn2').textContent=state.daily===todayKey()?'आज क्लेम हो चुका':'बोनस क्लेम करें';
+  const username=(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user&&tg.initDataUnsafe.user.username)?tg.initDataUnsafe.user.username:'YOUR_BOT_USERNAME';
+  const link='https://t.me/'+username+'?start=ref_demo';
+  $('refLink').textContent=link;
+ }
+ function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=> $('toast').classList.remove('show'),1100)}
+ $('tapBtn').addEventListener('click',()=>{
+  if(state.tapDay!==todayKey()){state.tapDay=todayKey();state.taps=0;state.energy=100}
+  if(state.taps>=100){toast('आज के टैप पूरे हो गए');return}
+  if(state.energy<=0){toast('एनर्जी खत्म');return}
+  state.coins+=1;state.taps+=1;state.energy=Math.max(0,state.energy-1);save();toast('+1 कॉइन!');
+ });
+ function daily(){
+  if(state.daily===todayKey()){toast('आज का बोनस मिल चुका');return}
+  state.daily=todayKey();state.coins+=50;save();toast('+50 कॉइन मिले!');
+ }
+ $('dailyBtn').addEventListener('click',daily);$('dailyBtn2').addEventListener('click',daily);
+ function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id))}
+ document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+ $('inviteBtn').addEventListener('click',()=>showPage('invitePage'));
+ $('shareBtn').addEventListener('click',()=>{
+  const text='Coin Tap Arena खेलें! '+$('refLink').textContent;
+  if(tg&&tg.openTelegramLink){tg.openTelegramLink('https://t.me/share/url?url='+encodeURIComponent($('refLink').textContent)+'&text='+encodeURIComponent('Coin Tap Arena खेलें!'))}
+  else if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>toast('लिंक कॉपी हुआ')).catch(()=>toast('लिंक ऊपर से कॉपी करें'))}
+  else toast('लिंक ऊपर से कॉपी करें');
+ });
+ render();
+ const initialTab = new URLSearchParams(window.location.search).get('tab');
+ const tabMap = {game:'gamePage', daily:'dailyPage', invite:'invitePage'};
+ if (initialTab && tabMap[initialTab]) showPage(tabMap[initialTab]);
+})();
+</script>
+</body>
+</html>
